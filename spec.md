@@ -185,7 +185,7 @@ The top-level format consists of a format declaration, version number, and a lis
 ```json
 {
     "format": "alignment",
-    "version": "0.3",
+    "version": "0.4",
     "groups": [
         <group1>,
         <group2>,
