@@ -19,11 +19,11 @@ An alignment can be viewed as a hypergraph where each hyperedge consists of:
 
  * an alignment type
  * references (with additional structure if the type is directional)
- * who is responsible for the alignment (possibly a computer  program)
+ * who is responsible for the alignment (possibly a computer program)
  * when the alignment was done (timestamp)
  * other optional information about the alignment (such as confidence and curation status)
 
-As described below, the format allows  hoisting of repeated information to a higher level although ultimately a file in this format can be processed as a flat collection of alignment records.
+As described below, the format allows hoisting of repeated information to a higher level although ultimately a file in this format can be processed as a flat collection of alignment records.
 
 ## Information Model
 
@@ -243,7 +243,7 @@ description: the most generic way of relating units in a directed way
 alignment type: `translation`
 roles: `source`, `target`
 description: `target` is a translation of `source`
-    
+
 And an example from a broader use case of linguistic annotation: 
 
 alignment type: `anaphora`
