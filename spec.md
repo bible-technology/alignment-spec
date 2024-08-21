@@ -8,6 +8,7 @@ Version 0.2    2023-09-19
 Version 0.2.1  2023-09-25
 Version 0.3    2023-10-02
 Version 0.3.1  2024-02-21
+Version 0.4    2024-08-21
 ```
 
 ## Introduction
