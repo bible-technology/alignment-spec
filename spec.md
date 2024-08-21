@@ -180,9 +180,7 @@ Note that `meta` properties that have been hoisted are merged with those remaini
 
 ### Top-Level Format
 
-The top-level format consists of a format declaration, version number, and then either a list of alignment groups or, if no hoisting has been performed, a list of alignment records.
-
-With groups:
+The top-level format consists of a format declaration, version number, and a list of alignment groups:
 
 ```json
 {
@@ -192,19 +190,6 @@ With groups:
         <group1>,
         <group2>,
         <group3>
-    ]
-}
-```
-Without groups:
-
-```json
-{
-    "format": "alignment",
-    "version": "0.3",
-    "records": [
-        <record1>,
-        <record2>,
-        ...
     ]
 }
 ```
