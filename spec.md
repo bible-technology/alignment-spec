@@ -27,9 +27,11 @@ As described below, the format allows  hoisting of repeated information to a hig
 
 ## Information Model
 
-A **reference** is a combination of a **reference scheme**, a **document identifier**, and a **reference selector**.
+A **reference** is a combination of a **reference scheme**, an optional **document identifier**, and a **reference selector**.
 
 <small>It is envisaged that some reference schemes will identify an existing tokenization of the document and others will merely indicate the tokenization scheme to be applied at processing time to the document.</small>
+
+<small>The documentation identifier is usually included but there are some cases where the alignment is not with a text but just with some referencing scheme (e.g. an audio timecode range might be aligned to a verse number without there being a transcript document). In such cases, a documentation identifier can be omitted.</small>
 
 As a whole, a reference must allow one to unambiguously identify a citable object (usually a word token, but optionally a smaller or larger unit). The separation of these three components allows the reference scheme and document identifier to be hoisted and only the reference selection included in each record.
 
