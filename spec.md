@@ -51,7 +51,7 @@ This specification describes a JSON serialization although other serializations 
 
 An alignment record with roles:
 
-```
+```json
 {
     "type": "translation",
     "source": <reference unit 1>,
@@ -64,7 +64,7 @@ An alignment record with roles:
 
 An alignment record without unit roles, or with unit roles hoisted:
 
-```
+```json
 { 
     "type": "translation",
     "references": [<reference unit 1>, <reference unit 2>],
@@ -76,13 +76,13 @@ An alignment record without unit roles, or with unit roles hoisted:
 
 Without hoisting, a full reference unit might look like:
 
-```
+```json
 { "scheme": "...", "docid": "...", "selectors": ["selector1", "selector2"] }
 ```
 
 but in practice, the `scheme` and `docid` are hoisted and just the selector or list of selectors included:
 
-```
+```json
 ["selector1", "selector2"]
 ```
 
@@ -92,7 +92,7 @@ Alignment records are grouped in an **alignment group** and all information in a
 
 Here the alignment type and creator have been hoisted:
 
-```
+```json
 { 
     "type": "translation",
     "meta": {
@@ -109,7 +109,7 @@ Here the alignment type and creator have been hoisted:
 
 The unit roles can be hoisted by listing the roles at the group level and then giving reference units positionally in a `references` property.
 
-```
+```json
 {
     "type": "translation",
     "meta": {
@@ -126,7 +126,7 @@ The unit roles can be hoisted by listing the roles at the group level and then g
 
 Here the reference scheme and document identifiers have also been hoisted:
 
-```
+```json
 {
     "type": "translation",
     "meta": {
@@ -150,7 +150,7 @@ Here the reference scheme and document identifiers have also been hoisted:
 
 This is equivalent to:
 
-```
+```json
 { 
     "records": [
         {
@@ -182,7 +182,7 @@ The top-level format consists of a format declaration, version number, and then 
 
 With groups:
 
-```
+```json
 {
     "format": "alignment",
     "version": "0.3",
@@ -195,7 +195,7 @@ With groups:
 ```
 Without groups:
 
-```
+```json
 {
     "format": "alignment",
     "version": "0.3",
@@ -223,7 +223,7 @@ The following are examples.
 
 The (tentatively named) `BCVWP` scheme uses a bible version as `docid` and an 11-character `BBCCCVVVWWWP` string according to the GrapeCity / Clear-Bible data, e.g.
 
-```
+```json
 { "scheme": "BCVWP", "docid": "NA27", "selectors": ["410040030011"] }
 ```
 
@@ -231,13 +231,13 @@ refers to the first word, Ἀκούετε in Mark 4.3 in the NA27.
 
 Another tentative scheme could be one that takes a filename as the `docid` and a token offset assuming whitespace tokenization:
 
-```
+```json
 { "scheme": "ws-token", "docid": "mydoc.txt", "selectors": ["37"] }
 ```
 
 Yet another tentative scheme could be one that takes a filename as the `docid` and character offset start and end assuming Unicode NFC normalization: 
 
-```
+```json
 { "scheme": "nfc-char", "docid": "mydoc.txt", "selectors": ["513-520"] } 
 ```
 
