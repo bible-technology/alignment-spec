@@ -8,6 +8,7 @@ Version 0.2    2023-09-19
 Version 0.2.1  2023-09-25
 Version 0.3    2023-10-02
 Version 0.3.1  2024-02-21
+Version 0.4    2024-08-21
 ```
 
 ## Introduction
@@ -18,17 +19,19 @@ An alignment can be viewed as a hypergraph where each hyperedge consists of:
 
  * an alignment type
  * references (with additional structure if the type is directional)
- * who is responsible for the alignment (possibly a computer  program)
+ * who is responsible for the alignment (possibly a computer program)
  * when the alignment was done (timestamp)
  * other optional information about the alignment (such as confidence and curation status)
 
-As described below, the format allows  hoisting of repeated information to a higher level although ultimately a file in this format can be processed as a flat collection of alignment records.
+As described below, the format allows hoisting of repeated information to a higher level although ultimately a file in this format can be processed as a flat collection of alignment records.
 
 ## Information Model
 
-A **reference** is a combination of a **reference scheme**, a **document identifier**, and a **reference selector**.
+A **reference** is a combination of a **reference scheme**, an optional **document identifier**, and a **reference selector**.
 
 <small>It is envisaged that some reference schemes will identify an existing tokenization of the document and others will merely indicate the tokenization scheme to be applied at processing time to the document.</small>
+
+<small>The documentation identifier is usually included but there are some cases where the alignment is not with a text but just with some referencing scheme (e.g. an audio timecode range might be aligned to a verse number without there being a transcript document). In such cases, a documentation identifier can be omitted.</small>
 
 As a whole, a reference must allow one to unambiguously identify a citable object (usually a word token, but optionally a smaller or larger unit). The separation of these three components allows the reference scheme and document identifier to be hoisted and only the reference selection included in each record.
 
@@ -50,7 +53,7 @@ This specification describes a JSON serialization although other serializations 
 
 An alignment record with roles:
 
-```
+```json
 {
     "type": "translation",
     "source": <reference unit 1>,
@@ -63,7 +66,7 @@ An alignment record with roles:
 
 An alignment record without unit roles, or with unit roles hoisted:
 
-```
+```json
 { 
     "type": "translation",
     "references": [<reference unit 1>, <reference unit 2>],
@@ -75,13 +78,13 @@ An alignment record without unit roles, or with unit roles hoisted:
 
 Without hoisting, a full reference unit might look like:
 
-```
+```json
 { "scheme": "...", "docid": "...", "selectors": ["selector1", "selector2"] }
 ```
 
 but in practice, the `scheme` and `docid` are hoisted and just the selector or list of selectors included:
 
-```
+```json
 ["selector1", "selector2"]
 ```
 
@@ -91,7 +94,7 @@ Alignment records are grouped in an **alignment group** and all information in a
 
 Here the alignment type and creator have been hoisted:
 
-```
+```json
 { 
     "type": "translation",
     "meta": {
@@ -108,7 +111,7 @@ Here the alignment type and creator have been hoisted:
 
 The unit roles can be hoisted by listing the roles at the group level and then giving reference units positionally in a `references` property.
 
-```
+```json
 {
     "type": "translation",
     "meta": {
@@ -125,7 +128,7 @@ The unit roles can be hoisted by listing the roles at the group level and then g
 
 Here the reference scheme and document identifiers have also been hoisted:
 
-```
+```json
 {
     "type": "translation",
     "meta": {
@@ -149,7 +152,7 @@ Here the reference scheme and document identifiers have also been hoisted:
 
 This is equivalent to:
 
-```
+```json
 { 
     "records": [
         {
@@ -177,31 +180,16 @@ Note that `meta` properties that have been hoisted are merged with those remaini
 
 ### Top-Level Format
 
-The top-level format consists of a format declaration, version number, and then either a list of alignment groups or, if no hoisting has been performed, a list of alignment records.
+The top-level format consists of a format declaration, version number, and a list of alignment groups:
 
-With groups:
-
-```
+```json
 {
     "format": "alignment",
-    "version": "0.3",
+    "version": "0.4",
     "groups": [
         <group1>,
         <group2>,
         <group3>
-    ]
-}
-```
-Without groups:
-
-```
-{
-    "format": "alignment",
-    "version": "0.3",
-    "records": [
-        <record1>,
-        <record2>,
-        ...
     ]
 }
 ```
@@ -222,7 +210,7 @@ The following are examples.
 
 The (tentatively named) `BCVWP` scheme uses a bible version as `docid` and an 11-character `BBCCCVVVWWWP` string according to the GrapeCity / Clear-Bible data, e.g.
 
-```
+```json
 { "scheme": "BCVWP", "docid": "NA27", "selectors": ["410040030011"] }
 ```
 
@@ -230,13 +218,13 @@ refers to the first word, Ἀκούετε in Mark 4.3 in the NA27.
 
 Another tentative scheme could be one that takes a filename as the `docid` and a token offset assuming whitespace tokenization:
 
-```
+```json
 { "scheme": "ws-token", "docid": "mydoc.txt", "selectors": ["37"] }
 ```
 
 Yet another tentative scheme could be one that takes a filename as the `docid` and character offset start and end assuming Unicode NFC normalization: 
 
-```
+```json
 { "scheme": "nfc-char", "docid": "mydoc.txt", "selectors": ["513-520"] } 
 ```
 
@@ -255,7 +243,7 @@ description: the most generic way of relating units in a directed way
 alignment type: `translation`
 roles: `source`, `target`
 description: `target` is a translation of `source`
-    
+
 And an example from a broader use case of linguistic annotation: 
 
 alignment type: `anaphora`
